@@ -54,7 +54,7 @@ This project demonstrates CRUD operations, relational database handling, validat
 
 ### 1. Clone the repository
 
-```bash
+``` bash
 git clone https://github.com/monishabharadwaj/UserManagementNodeAPI.git
 cd UserManagementNodeAPI
 2. Install dependencies
@@ -92,11 +92,14 @@ npm start
 Server runs at:
 
 http://localhost:8084
+```
+
+----
 
 ## 🔎 API Endpoints
 
-Health check
-
+# Health check
+```
 GET /health
 Get all users
 GET /api/users
@@ -106,9 +109,11 @@ Get user by username
 GET /api/users/username/:username
 Get user by email
 GET /api/users/email/:email
-Create user
-POST /api/users
+```
 
+# Create user
+POST /api/users
+```
 Example request body:
 
 {
@@ -129,25 +134,29 @@ Example request body:
     "bs": "technology solutions"
   }
 }
-
-Update user
+```
+# Update user
+```
 PUT /api/users/:id
-
-Delete user
+```
+# Delete user
+```
 DELETE /api/users/:id
+```
 
+-----
 
 ## 🧠 Learning Highlights
 
-This project demonstrates:
+## This project demonstrates:
 
-Relational database schema design
+- Relational database schema design
 
-Service-layer backend architecture
+- Service-layer backend architecture
 
-Handling nested objects in REST APIs
+- Handling nested objects in REST APIs
 
-Using transactions for data consistency
+- Using transactions for data consistency
 
-Structuring scalable Node.js backend applications
+- Structuring scalable Node.js backend applications
 
