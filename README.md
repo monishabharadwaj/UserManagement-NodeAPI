@@ -33,19 +33,19 @@ This project demonstrates CRUD operations, relational database handling, validat
 ## 📂 Project Structure
 
 
-UserManagementNodeAPI/
-│
-├── config/ # Database configuration
-├── controllers/ # Request handlers
-├── services/ # Business logic
-├── models/ # Domain models
-├── routes/ # API routes
-├── database/ # SQL schema files
-│
-├── server.js # App entry point
-├── setup-database.js # Database setup script
-├── package.json
-├── .env.example
+# UserManagementNodeAPI/
+      │
+      ├── config/ # Database configuration
+      ├── controllers/ # Request handlers
+      ├── services/ # Business logic
+      ├── models/ # Domain models
+      ├── routes/ # API routes
+      ├── database/ # SQL schema files
+      │
+      ├── server.js # App entry point
+      ├── setup-database.js # Database setup script
+      ├── package.json
+      ├── .env.example
 
 
 ---
