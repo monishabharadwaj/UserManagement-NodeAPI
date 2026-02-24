@@ -93,7 +93,7 @@ Server runs at:
 
 http://localhost:8084
 
-🔎 API Endpoints
+## 🔎 API Endpoints
 
 Health check
 
@@ -137,7 +137,7 @@ Delete user
 DELETE /api/users/:id
 
 
-🧠 Learning Highlights
+## 🧠 Learning Highlights
 
 This project demonstrates:
 
