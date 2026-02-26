@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const pool = require('../config/database');
 const User = require('../models/User');
 const Address = require('../models/Address');
@@ -85,6 +86,13 @@ class UserService {
         return rows.length > 0 ? User.fromDbRow(rows[0]) : null;
     }
 
+    // Login helper: return full user row including password for authentication
+    async getUserWithPasswordByEmail(email) {
+        const query = `SELECT * FROM users WHERE email = ?`;
+        const [rows] = await pool.execute(query, [email]);
+        return rows.length > 0 ? rows[0] : null;
+    }
+
     async existsByUsername(username) {
         const query = 'SELECT COUNT(*) as count FROM users WHERE username = ?';
         const [rows] = await pool.execute(query, [username]);
@@ -150,12 +158,35 @@ class UserService {
             }
 
             // Create User
-            const user = new User(userData);
-            const userValues = user.toDbValues();
-            const [userResult] = await connection.execute(
-                'INSERT INTO users (name, username, email, phone, website, address_id, company_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [userValues.name, userValues.username, userValues.email, userValues.phone, userValues.website, addressId, companyId]
-            );
+            // 🔐 Require password
+if (!userData.password) {
+    throw new Error("Password is required");
+}
+
+// 🔐 Hash password
+const bcrypt = require('bcryptjs');
+const salt = await bcrypt.genSalt(10);
+const hashedPassword = await bcrypt.hash(userData.password, salt);
+
+// Create User
+const user = new User(userData);
+const userValues = user.toDbValues();
+
+const [userResult] = await connection.execute(
+    `INSERT INTO users 
+    (name, username, email, password, phone, website, address_id, company_id) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+        userValues.name,
+        userValues.username,
+        userValues.email,
+        hashedPassword,   // 🔐 stored password
+        userValues.phone,
+        userValues.website,
+        addressId,
+        companyId
+    ]
+);
 
             await connection.commit();
             return await this.getUserById(userResult.insertId);

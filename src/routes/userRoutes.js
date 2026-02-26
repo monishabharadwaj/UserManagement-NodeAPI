@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/UserController');
 const { body } = require('express-validator');
+const protect = require('../middlewares/authMiddleware');
+const authorize = require('../middlewares/roleMiddleware');
 
 // Validation rules
 const userValidation = [
@@ -11,12 +13,24 @@ const userValidation = [
 ];
 
 // Routes
-router.get('/', userController.getAllUsers.bind(userController));
-router.get('/:id', userController.getUserById.bind(userController));
+// Only admin can list all users
+router.get('/', protect, authorize('admin'), userController.getAllUsers.bind(userController));
+
+// Allow admin or owner to view profile
+router.get('/:id', protect, (req, res, next) => {
+    if (req.user && (req.user.role === 'admin' || req.user.id == req.params.id)) {
+        return userController.getUserById.bind(userController)(req, res, next);
+    }
+
+    return res.status(403).json({ message: 'Access denied' });
+});
+
 router.get('/username/:username', userController.getUserByUsername.bind(userController));
 router.get('/email/:email', userController.getUserByEmail.bind(userController));
 router.post('/', userValidation, userController.createUser.bind(userController));
 router.put('/:id', userValidation, userController.updateUser.bind(userController));
-router.delete('/:id', userController.deleteUser.bind(userController));
+
+// Only admin can delete users
+router.delete('/:id', protect, authorize('admin'), userController.deleteUser.bind(userController));
 
 module.exports = router;
