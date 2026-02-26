@@ -1,162 +1,157 @@
-# User Management Node API
+# 🔐 User Management API (Secure Backend)
 
-A RESTful User Management API built using **Node.js, Express, and MySQL**.  
-This project demonstrates CRUD operations, relational database handling, validation, and layered backend architecture.
+A production-style Node.js + Express + MySQL backend application with:
+
+- JWT Authentication
+- Role-Based Access Control (RBAC)
+- Password Hashing
+- Rate Limiting
+- Strong Password Validation
+- Transaction-based MySQL operations
+- Clean layered architecture
 
 ---
 
 ## 🚀 Features
 
-- Create, Read, Update, Delete Users
-- MySQL relational database with foreign keys
-- Nested entities support (Address → Geo, Company)
-- Transactions for safe inserts & updates
-- Request validation using express-validator
-- Layered architecture (Controller → Service → Model)
-- Connection pooling for database performance
-- CORS enabled API
+### 🔐 Authentication
+- User Registration
+- Login with JWT
+- Password hashing using bcrypt
+- Strong password policy enforcement
+
+### 🛡 Authorization
+- Role-based access control (Admin / User)
+- Protected routes using JWT middleware
+
+### ⚡ Security Enhancements
+- Rate limiting to prevent brute-force attacks
+- Secure HTTP headers (Helmet)
+- Environment-based configuration
+- Centralized error handling
+
+### 🗄 Database
+- MySQL relational database
+- Transaction-based inserts
+- Foreign key relationships
+- Indexed fields for performance
 
 ---
 
-## 🛠 Tech Stack
+## 🏗 Architecture
+
+Layered architecture:
+
+Routes → Controllers → Services → Models → Database
+
+
+- Controllers handle HTTP logic
+- Services contain business logic
+- Models manage data structure
+- Middleware handles authentication & authorization
+
+---
+
+## 🧰 Tech Stack
 
 - Node.js
 - Express.js
 - MySQL
-- mysql2 (Promise-based driver)
-- express-validator
+- JWT (jsonwebtoken)
+- bcryptjs
+- express-rate-limit
+- Helmet
 - dotenv
-- cors
 
 ---
 
-## 📂 Project Structure
+## 🔐 Authentication Flow
+
+1. User registers → password is hashed
+2. User logs in → JWT token is generated
+3. Protected routes require:
 
 
-# UserManagementNodeAPI/
-      │
-      ├── config/ # Database configuration
-      ├── controllers/ # Request handlers
-      ├── services/ # Business logic
-      ├── models/ # Domain models
-      ├── routes/ # API routes
-      ├── database/ # SQL schema files
-      │
-      ├── server.js # App entry point
-      ├── setup-database.js # Database setup script
-      ├── package.json
-      ├── .env.example
+Authorization: Bearer <TOKEN>
 
+
+4. Middleware verifies token before allowing access
 
 ---
 
-## ⚙️ Setup Instructions
+## 📌 API Endpoints
 
-### 1. Clone the repository
+### 🔐 Auth Routes
 
-``` bash
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /api/auth/register | Register user |
+| POST | /api/auth/login | Login and receive JWT |
+
+### 👥 User Routes (Protected)
+
+| Method | Endpoint | Access |
+|--------|----------|--------|
+| GET | /api/users | Admin only |
+| GET | /api/users/:id | Admin or Owner |
+| DELETE | /api/users/:id | Admin only |
+
+---
+
+## ⚙️ Installation
+
+```bash
 git clone https://github.com/monishabharadwaj/UserManagementNodeAPI.git
 cd UserManagementNodeAPI
-2. Install dependencies
 npm install
-3. Configure environment variables
+🔧 Environment Variables
 
-Create a .env file in project root and add:
+Create a .env file:
+
 
 PORT=8084
 DB_HOST=localhost
-DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=yourpassword
 DB_NAME=usermanagement
-4. Create database
+JWT_SECRET=your_secret_key
+JWT_EXPIRES_IN=1d
+NODE_ENV=development
 
-Open MySQL and run:
-
-CREATE DATABASE usermanagement;
-
-Then import schema:
-
-mysql -u root -p usermanagement < database/init.sql
-
-5. Start server
-
-Development:
-
-npm run dev
-
-Production:
+▶️ Run Server
 
 npm start
 
+
 Server runs at:
 
+
 http://localhost:8084
-```
 
-----
+🛡 Security Measures Implemented
 
-## 🔎 API Endpoints
+Password hashing with bcrypt
 
-# Health check
-```
-GET /health
-Get all users
-GET /api/users
-Get user by ID
-GET /api/users/:id
-Get user by username
-GET /api/users/username/:username
-Get user by email
-GET /api/users/email/:email
-```
+Strong password validation
 
-# Create user
-POST /api/users
-```
-Example request body:
+JWT token-based authentication
 
-{
-  "name": "Leanne Graham",
-  "username": "Bret",
-  "email": "leanne@email.com",
-  "phone": "1234567890",
-  "website": "example.com",
-  "address": {
-    "street": "Main Road",
-    "suite": "Apt 1",
-    "city": "Bangalore",
-    "zipcode": "560001"
-  },
-  "company": {
-    "name": "ABC Pvt Ltd",
-    "catchPhrase": "Innovation driven",
-    "bs": "technology solutions"
-  }
-}
-```
-# Update user
-```
-PUT /api/users/:id
-```
-# Delete user
-```
-DELETE /api/users/:id
-```
+Role-based access control
 
------
+Rate limiting on login routes
 
-## 🧠 Learning Highlights
+Environment variable protection
 
-## This project demonstrates:
+🔮 Future Improvements
 
-- Relational database schema design
+Refresh token implementation
 
-- Service-layer backend architecture
+Account lock after failed attempts
 
-- Handling nested objects in REST APIs
+Swagger API documentation
 
-- Using transactions for data consistency
+Unit & integration testing (Jest)
 
-- Structuring scalable Node.js backend applications
+Deployment to cloud platform
 
+CI/CD pipeline
