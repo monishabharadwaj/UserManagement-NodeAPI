@@ -128,7 +128,9 @@ Server runs at:
 
 http://localhost:8084
 
-🛡 Security Measures Implemented
+```
+
+## 🛡 Security Measures Implemented
 
 Password hashing with bcrypt
 
@@ -142,7 +144,7 @@ Rate limiting on login routes
 
 Environment variable protection
 
-🔮 Future Improvements
+## 🔮 Future Improvements
 
 Refresh token implementation
 
