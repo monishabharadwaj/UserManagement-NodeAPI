@@ -20,7 +20,9 @@ class AuthController {
 
             const user = await userService.createUser(req.body);
 
-            const token = generateToken(user);
+            // Set role from request body or default to 'admin' for now
+            const role = req.body.role || 'admin';
+            const token = generateToken({ ...user, role });
 
             res.status(201).json({
                 message: "User registered successfully",
@@ -56,6 +58,9 @@ class AuthController {
 
             // 🔐 Remove password
             delete user.password;
+
+            // Ensure role is present in token payload (default admin for now)
+            user.role = user.role || 'admin';
 
             // 🔐 Generate token
             const token = generateToken(user);

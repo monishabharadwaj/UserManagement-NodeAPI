@@ -3,8 +3,12 @@ const jwt = require('jsonwebtoken');
 const SECRET = process.env.JWT_SECRET || 'change_this_in_production';
 
 function generateToken(user) {
-  // Sign minimal payload to keep token small
-  const payload = { id: user.id, username: user.username };
+  // Include role so RBAC checks work
+  const payload = {
+    id: user.id,
+    username: user.username,
+    role: user.role,
+  };
   return jwt.sign(payload, SECRET, { expiresIn: '7d' });
 }
 
